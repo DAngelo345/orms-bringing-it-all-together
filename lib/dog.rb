@@ -29,21 +29,26 @@ class Dog
     def save
         if self.id
             self.update
-          else
-          
-            sql = <<-SQL
-              INSERT INTO dogs (name, breed)
-              VALUES (?, ?)
-            SQL
-            DB[:conn].execute(sql, self.name, self.breed self.id)
-            @id = DB[:conn].execute("SELECT last_insert_rowid() FROM dogs")[0][0]
-          end
+        else
+        sql = <<-SQL
+      INSERT INTO dogs (name, breed) 
+      VALUES (?, ?)
+    SQL
+
+   DB[:conn].execute(sql, self.name, self.breed)
+  
+        end
+        self
     end
 
-    def update
-        sql = "UPDATE dogs SET name = ?, breed = ? WHERE id = ?"
-        DB[:conn].execute(sql, self.name, self.breed, self.id)
-      end
+    def self.create(name:, breed:)
+        dog = Dog.new(name, breed)
+        dog.save
+        dog
+    
+
+
+    end
 
 
 
